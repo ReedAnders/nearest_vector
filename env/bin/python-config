@@ -1,4 +1,4 @@
-#!/home/user/distributed_health_app/wordcount/env/bin/python
+#!/home/ubuntu/nearest_vector/env/bin/python
 
 import sys
 import getopt

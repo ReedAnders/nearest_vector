@@ -1,4 +1,4 @@
-#!/home/user/distributed_health_app/wordcount/env/bin/python2
+#!/home/ubuntu/nearest_vector/env/bin/python2
 
 # -*- coding: utf-8 -*-
 import re
