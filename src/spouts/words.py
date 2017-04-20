@@ -3,7 +3,7 @@ from itertools import cycle
 from streamparse import Spout
 
 
-class WordSpout(Spout):
+class VectorSpout(Spout):
     outputs = ['word']
 
     def initialize(self, stormconf, context):

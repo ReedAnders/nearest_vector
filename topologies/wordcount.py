@@ -5,10 +5,10 @@ Word count topology
 from streamparse import Grouping, Topology
 
 from bolts.NearestVectors import NearestVectorsBolt
-from spouts.words import WordSpout
+from spouts.words import VectorSpout
 
 
 class NearestVectors(Topology):
-    word_spout = WordSpout.spec()
-    count_bolt = NearestVectorsBolt.spec(inputs={word_spout: Grouping.fields('word')},
+    vector_spout = VectorSpout.spec()
+    count_bolt = NearestVectorsBolt.spec(inputs={vector_spout: Grouping.fields('word')},
                                     par=2)
