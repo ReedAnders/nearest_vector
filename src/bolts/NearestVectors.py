@@ -74,6 +74,10 @@ class NearestBolt(Bolt):
             self.nearest[5] = (_sum, _id)
             self.nearest.sort(key=lambda x: x[0])
 
+        if self.total % 1000 == 0:
+            self.logger.info("counted [{:,}] nearest [{}]".format(self.total,
+                                                                self.nearest))
+
         if self.total == 10000:
             self.emit([self.nearest])
 

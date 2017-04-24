@@ -6,7 +6,7 @@ class IndexSpout(Spout):
     outputs = ['pair', 'vector_id']
 
     def initialize(self, stormconf, context):
-        self.query = np.random.rand(1,20)
+        self.query = np.random.rand(20,)
         self.matrix = ((x,y) for (x,y) in enumerate(np.random.rand(10000,20)))
 
     def next_tuple(self):
