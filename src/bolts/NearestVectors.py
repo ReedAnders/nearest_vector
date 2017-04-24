@@ -36,6 +36,8 @@ class PairProcessBolt(Bolt):
 
         pair = (pair[0]-pair[1])**2
 
+        self.logger.info("PAIRBOLT vector_id [{:,}]".format(vector_id))
+
         self.emit([pair, vector_id])
 
 class VectorSumBolt(Bolt):
@@ -51,6 +53,7 @@ class VectorSumBolt(Bolt):
         self.total =+ 1
 
         if self.total == 20:
+            self.logger.info("SUMBOLT vector_id [{:,}]".format(tup.values[1]))
             self.sum = np.sqrt(self.sum)
             self.emit([self.sum, tup.values[1],'final'])
 
