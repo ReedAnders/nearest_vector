@@ -1,14 +1,16 @@
-from itertools import cycle
-
+import numpy as np
 from streamparse import Spout
 
 
-class VectorSpout(Spout):
-    outputs = ['word']
+class IndexSpout(Spout):
+    outputs = ['pair', 'vector_id']
 
     def initialize(self, stormconf, context):
-        self.words = cycle(['dog', 'cat', 'zebra', 'elephant'])
+        self.query = np.random.rand(1,20)
+        self.matrix = ((x,y) for (x,y) in enumerate(np.random.rand(10000,20)))
 
     def next_tuple(self):
-        word = next(self.words)
-        self.emit([word])
+        vector = next(self.matrix)
+
+        for index_id, pair in enumerate(zip(vector[1], self.query)):
+            self.emit([pair, vector[0]])
