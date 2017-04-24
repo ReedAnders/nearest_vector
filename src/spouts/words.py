@@ -7,7 +7,7 @@ class IndexSpout(Spout):
 
     def initialize(self, stormconf, context):
         self.query = np.random.rand(20,)
-        self.matrix = ((x,y) for (x,y) in enumerate(np.random.rand(10000,20)))
+        self.matrix = ((x,y) for (x,y) in enumerate(np.random.rand(10,20)))
 
     def next_tuple(self):
         try:
