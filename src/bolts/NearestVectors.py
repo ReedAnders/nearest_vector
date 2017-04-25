@@ -66,16 +66,16 @@ class NearestBolt(Bolt):
 
     def initialize(self, conf, ctx):
         self.nearest = []
-        self.total = Counter()
+        self.total = 0
         self.pid = os.getpid()
 
     def _increment(self, tup, inc_by):
-        self.total[tup[1]] += inc_by
+        self.total += inc_by
         self.nearest.append(tup)
         self.nearest.sort(key=lambda x: x[0])
 
     def _increment_min(self, tup, inc_by):
-        self.total[tup[1]] += inc_by
+        self.total += inc_by
         self.nearest[5] = tup
         self.nearest.sort(key=lambda x: x[0])
 
