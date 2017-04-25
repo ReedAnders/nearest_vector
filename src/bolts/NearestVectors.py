@@ -46,12 +46,12 @@ class VectorSumBolt(Bolt):
 
     def initialize(self, conf, ctx):
         self.sum = 0
-        self.total = 0
+        self.total = Counter()
         self.pid = os.getpid()
 
-    def _increment(self, _sum, inc_by):
-        self.sum += _sum
-        self.total += inc_by
+    def _increment(self, tup, inc_by):
+        self.sum += tup[0]
+        self.total[tup[1]] += inc_by
 
     def process(self, tup):
 
@@ -66,23 +66,22 @@ class NearestBolt(Bolt):
 
     def initialize(self, conf, ctx):
         self.nearest = []
-        self.total = 0
+        self.total = Counter()
         self.pid = os.getpid()
 
-    def _increment(self, _sum, inc_by):
-        self.total += inc_by
-        self.nearest.append(_sum)
+    def _increment(self, tup, inc_by):
+        self.total[tup[1]] += inc_by
+        self.nearest.append(tup)
         self.nearest.sort(key=lambda x: x[0])
 
-    def _increment_min(self, _sum, inc_by):
-        self.total += inc_by
-        self.nearest[5] = (_sum, _id)
+    def _increment_min(self, tup, inc_by):
+        self.total[tup[1]] += inc_by
+        self.nearest[5] = tup
         self.nearest.sort(key=lambda x: x[0])
 
     def process(self, tup):
         _sum = tup.values[0]
         _id = tup.values[1]
-        self.total =+ 1
 
         if len(self.nearest) <= 6:
             self._increment((_sum,_id), 1)
