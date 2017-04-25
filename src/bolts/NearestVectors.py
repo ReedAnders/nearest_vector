@@ -1,5 +1,8 @@
 import os
 from collections import Counter
+import requests
+import json
+
 import numpy as np
 
 from streamparse import Bolt
@@ -80,6 +83,11 @@ class NearestBolt(Bolt):
         self.nearest = self.nearest[:5]
         self.nearest.sort(key=lambda x: x[0])
 
+    def _post_nearest(self):
+        nearest_index = [x for (x,y) in self.nearest]
+        msg_nearest = json.dumps(nearest_index)
+        requests.post('http://127.0.0.1:5000/update', data = {'user':'A', 'vector':msg_nearest})
+
     def process(self, tup):
         _sum = tup.values[0]
         _id = tup.values[1]
@@ -92,5 +100,6 @@ class NearestBolt(Bolt):
         if self.total == 9:
             self.logger.info("NEAR_BOLT counted [{}] nearest [{}]".format(self.total,
                                                                 self.nearest))
+            self._post_nearest()
             self.emit([self.nearest])
 
