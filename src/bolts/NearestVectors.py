@@ -84,14 +84,13 @@ class NearestBolt(Bolt):
         _sum = tup.values[0]
         _id = tup.values[1]
 
-        self.logger.info("NEAR_BOLT counted [{}] nearest [{}]".format(self.total,
-                                                                self.nearest))
-
         if len(self.nearest) <= 6:
             self._increment((_sum,_id), 1)
         elif _sum < self.nearest[5]:
             self._increment_min((_sum,_id), 1)
 
-        if self.total == 10000:
+        if self.total == 10:
+            self.logger.info("NEAR_BOLT counted [{}] nearest [{}]".format(self.total,
+                                                                self.nearest))
             self.emit([self.nearest])
 
