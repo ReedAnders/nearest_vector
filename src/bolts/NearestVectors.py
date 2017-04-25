@@ -88,7 +88,7 @@ class NearestBolt(Bolt):
         elif _sum < self.nearest[5]:
             self._increment_min((_sum,_id), 1)
 
-        self.logger.info("counted [{:,}] nearest [{}]".format(self.total,
+        self.logger.info("NEAR_BOLT counted [{}] nearest [{}]".format(self.total,
                                                                 self.nearest))
 
         if self.total == 10000:
