@@ -48,15 +48,17 @@ class VectorSumBolt(Bolt):
         self.total = 0
         self.pid = os.getpid()
 
-    def process(self, tup):
-        self.sum =+ tup.values[0]
-        self.total =+ 1
+    def _increment(self, _sum, inc_by):
+        self.sum += _sum
+        self.total += inc_by
 
+    def process(self, tup):
+
+        self._increment(tup.values[0], 1)
         self.logger.info("SUMBOLT vector_id [{},{}]".format(self.total, tup))
 
         if self.total == 20:
-            self.sum = np.sqrt(self.sum)
-            self.emit([self.sum, str(tup.values[1]),'final'])
+            self.emit([np.sqrt(self.sum), str(tup.values[1]),'final'])
 
 class NearestBolt(Bolt):
     outputs = ['nearest']
@@ -66,17 +68,25 @@ class NearestBolt(Bolt):
         self.total = 0
         self.pid = os.getpid()
 
+    def _increment(self, _sum, inc_by):
+        self.total += inc_by
+        self.nearest.append(_sum)
+        self.nearest.sort(key=lambda x: x[0])
+
+    def _increment_min(self, _sum, inc_by):
+        self.total += inc_by
+        self.nearest[5] = (_sum, _id)
+        self.nearest.sort(key=lambda x: x[0])
+
     def process(self, tup):
         _sum = tup.values[0]
         _id = tup.values[1]
         self.total =+ 1
 
         if len(self.nearest) <= 6:
-            self.nearest.append((_sum,_id))
-            self.nearest.sort(key=lambda x: x[0])
+            self._increment((_sum,_id), 1)
         elif _sum < self.nearest[5]:
-            self.nearest[5] = (_sum, _id)
-            self.nearest.sort(key=lambda x: x[0])
+            self._increment_min((_sum,_id), 1)
 
         if self.total % 1000 == 0:
             self.logger.info("counted [{:,}] nearest [{}]".format(self.total,
