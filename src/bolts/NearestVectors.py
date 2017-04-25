@@ -52,7 +52,7 @@ class VectorSumBolt(Bolt):
         self.sum =+ tup.values[0]
         self.total =+ 1
 
-        self.logger.info("SUMBOLT vector_id [{}]".format(self.total))
+        self.logger.info("SUMBOLT vector_id [{}]".format(tup))
 
         if self.total == 20:
             self.sum = np.sqrt(self.sum)
