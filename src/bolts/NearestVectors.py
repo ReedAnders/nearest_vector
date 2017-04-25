@@ -58,8 +58,7 @@ class VectorSumBolt(Bolt):
         self._increment((tup.values[0],tup.values[1]), 1)
         self.logger.info("SUMBOLT vector_id [{},{}]".format(self.total,tup.values[1]))
 
-        if self.total[tup[1]] == 20:
-            self.emit([np.sqrt(self.sum[tup.values[1]]), str(tup.values[1]),'final'])
+        self.emit([np.sqrt(self.sum[tup.values[1]]), str(tup.values[1]),'final'])
 
 class NearestBolt(Bolt):
     outputs = ['nearest']
