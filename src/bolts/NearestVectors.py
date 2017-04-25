@@ -86,7 +86,8 @@ class NearestBolt(Bolt):
     def _post_nearest(self):
         nearest_index = [x for (x,y) in self.nearest]
         msg_nearest = json.dumps(nearest_index)
-        requests.post('http://127.0.0.1:5000/update', data = {'user':'A', 'vector':msg_nearest})
+        r = requests.post('http://127.0.0.1:5000/update', data = {'user':'A', 'vector':msg_nearest})
+        self.logger.info("***************** Request {}".format(r.json()))
 
     def process(self, tup):
         _sum = tup.values[0]
