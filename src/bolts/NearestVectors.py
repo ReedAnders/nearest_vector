@@ -77,6 +77,7 @@ class NearestBolt(Bolt):
     def _increment_min(self, tup, inc_by):
         self.total += inc_by
         self.nearest[5] = tup
+        self.nearest = self.nearest[:5]
         self.nearest.sort(key=lambda x: x[0])
 
     def process(self, tup):
