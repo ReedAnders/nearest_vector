@@ -55,7 +55,7 @@ class VectorSumBolt(Bolt):
 
     def process(self, tup):
 
-        self._increment(tup.values[0], 1)
+        self._increment((tup.values[0],tup.values[1]), 1)
         self.logger.info("SUMBOLT vector_id [{},{}]".format(self.total, tup))
 
         if self.total == 20:
