@@ -4,13 +4,15 @@ Word count topology
 
 from streamparse import Grouping, Topology
 
-from bolts.NearestVectors import PairProcessBolt, VectorSumBolt, NearestBolt
+from bolts.NearestVectors import VectorMapBolt, PairProcessBolt, VectorSumBolt, NearestBolt
 from spouts.words import IndexSpout
 
 
 class NearestVectors(Topology):
     vector_spout = IndexSpout.spec()
-    index_bolt = PairProcessBolt.spec(inputs={vector_spout: Grouping.SHUFFLE},
+    vector_bolt = VectorMapBolt.spec(inputs={vector_spout: Grouping.SHUFFLE},
+                                    par=8)
+    index_bolt = PairProcessBolt.spec(inputs={vector_bolt: Grouping.SHUFFLE},
                                     par=8)
     sum_bolt = VectorSumBolt.spec(inputs={index_bolt: Grouping.fields('vector_id')},
                                     par=8)
