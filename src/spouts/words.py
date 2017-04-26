@@ -10,8 +10,10 @@ class IndexSpout(Spout):
         self.matrix = ((x,y) for (x,y) in enumerate(np.random.rand(10,20)))
 
     def next_tuple(self):
-        vector = next(self.matrix)
+        try:
+            vector = next(self.matrix)
 
-        self.logger.info("vector id [{:,}]".format(vector[0]))
-        self.emit([vector[1], vector[0], self.query])
-
+            self.logger.info("vector id [{}]".format(vector[0]))
+            self.emit([vector[1], vector[0], self.query])
+        except:
+            pass
