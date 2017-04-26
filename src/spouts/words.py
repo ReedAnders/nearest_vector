@@ -15,6 +15,6 @@ class IndexSpout(Spout):
 
             self.logger.info("SPOUT vector [{}]".format(vector[0]))
 
-            self.emit([vector[1], vector[0], self.query])
+            self.emit([list(vector[1]), vector[0], list(self.query)])
         except:
             pass
