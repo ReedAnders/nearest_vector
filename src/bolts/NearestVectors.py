@@ -28,6 +28,20 @@ from streamparse import Bolt
 #                                                                     self.pid))
 #         self.emit([word, self.counter[word]])
 
+class VectorMapBolt(Bolt):
+    outputs = ['pair', 'vector_id']
+
+    def initialize(self, conf, ctx):
+        self.pid = os.getpid()
+
+    def process(self, tup):
+        vector = tup.values[0]
+        vector_id = tup.values[1]
+        query = tup.values[2]
+
+        for index_id, pair in enumerate(zip(vector, query)):
+            self.emit([pair, vector_id])
+
 class PairProcessBolt(Bolt):
     outputs = ['pair', 'vector_id']
 
@@ -87,7 +101,7 @@ class NearestBolt(Bolt):
         nearest_index = [x for (x,y) in self.nearest]
         msg_nearest = json.dumps(nearest_index)
         r = requests.post('http://127.0.0.1:5000/update', data = {'user':'A', 'vector':msg_nearest})
-        self.logger.info("***************** Request {}".format(r.json()))
+        self.logger.info("***************** Request {}".format(response.text))
 
     def process(self, tup):
         _sum = tup.values[0]

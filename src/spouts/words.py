@@ -3,7 +3,7 @@ from streamparse import Spout
 
 
 class IndexSpout(Spout):
-    outputs = ['pair', 'vector_id']
+    outputs = ['vector', 'vector_id', 'query']
 
     def initialize(self, stormconf, context):
         self.query = np.random.rand(20,)
@@ -13,8 +13,7 @@ class IndexSpout(Spout):
         try:
             vector = next(self.matrix)
 
-            for index_id, pair in enumerate(zip(vector[1], self.query)):
-                self.emit([pair, vector[0]])
+            self.emit([vector[1], vector[0], self.query])
 
             self.logger.info("vector id [{:,}]".format(vector[0]))
         except:

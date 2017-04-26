@@ -1,1 +1,2 @@
 streamparse # always required for streamparse projects
+numpy
