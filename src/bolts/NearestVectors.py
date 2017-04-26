@@ -117,6 +117,6 @@ class NearestBolt(Bolt):
         if self.total == 9:
             self.logger.info("NEAR_BOLT counted [{}] nearest [{}]".format(self.total,
                                                                 self.nearest))
-            self._post_nearest()
+            # self._post_nearest()
             self.emit([self.nearest])
 
