@@ -13,8 +13,7 @@ class IndexSpout(Spout):
         try:
             vector = next(self.matrix)
 
-            self.emit([vector[1], vector[0], self.query])
-
             self.logger.info("vector id [{:,}]".format(vector[0]))
+            self.emit([vector[1], vector[0], self.query])
         except:
             pass
