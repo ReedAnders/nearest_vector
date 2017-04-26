@@ -39,6 +39,8 @@ class VectorMapBolt(Bolt):
         vector_id = tup.values[1]
         query = tup.values[2]
 
+        self.logger.info("VECTOR MAP [{}]".format(vector_id))
+
         for index_id, pair in enumerate(zip(vector, query)):
             self.emit([pair, vector_id])
 
